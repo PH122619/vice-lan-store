@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark" data-font="system" data-contrast="normal" data-colorblind="none" data-motion="normal">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VICE LAN & STORE | Projeto Escolar GTA 6</title>
+    <style>
+        /* === TEMA E VARIÁVEIS (GTA 6 VICE CITY / LEONIDA) === */
+        :root {
+            --bg-main: #0c0a13;
+            --bg-card: #151122;
+            --bg-header: #120e1f;
+            --text-main: #f3f0ff;
+            --text-muted: #a69bbd;
+            --border-color: #2c2445;
+            --primary: #ff2a85; /* Rosa Neon GTA 6 */
+            --primary-hover: #e01b73;
+            --secondary: #7000ff; /* Roxo Vibrante */
+            --accent: #ff7b00; /* Laranja Pôr do Sol */
+            --cyan: #00f0ff;
+            --success: #00e676;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --focus-ring: #00f0ff;
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f5f3fa;
+            --bg-card: #ffffff;
+            --bg-header: #eae6f5;
+            --text-main: #181226;
+            --text-muted: #5e527a;
+            --border-color: #d1c8eb;
+            --primary: #d90065;
+            --primary-hover: #b50053;
+            --secondary: #5800cc;
+            --accent: #d96800;
+            --cyan: #0088cc;
+            --success: #00a854;
+            --shadow: rgba(100, 80, 130, 0.15);
+            --focus-ring: #5800cc;
+        }
+
+        /* === ACESSIBILIDADE: FONTES & TAMANHOS === */
+        [data-font="lexend"] { font-family: 'Lexend', system-ui, sans-serif !important; }
+        [data-font="system"] { font-family: system-ui, -apple-system, sans-serif !important; }
+
+        html[data-text-size="small"] { font-size: 14px; }
+        html[data-text-size="normal"] { font-size: 16px; }
+        html[data-text-size="large"] { font-size: 19px; }
+        html[data-text-size="xlarge"] { font-size: 22px; }
+
+        /* === ACESSIBILIDADE: ALTO CONTRASTE === */
+        [data-contrast="high"] {
+            --bg-main: #000000 !important;
+            --bg-card: #121212 !important;
+            --bg-header: #000000 !important;
+            --text-main: #ffffff !important;
+            --text-muted: #ffff00 !important;
+            --border-color: #ffffff !important;
+            --primary: #ffff00 !important;
+            --primary-hover: #cccc00 !important;
+            --secondary: #00ffff !important;
+            --cyan: #00ffff !important;
+        }
+
+        /* === ACESSIBILIDADE: DALTONISMO (FILTROS SVG/CSS) === */
+        [data-colorblind="protanopia"] { filter: url('#protanopia-filter'); }
+        [data-colorblind="deuteranopia"] { filter: url('#deuteranopia-filter'); }
+        [data-colorblind="tritanopia"] { filter: url('#tritanopia-filter'); }
+
+        [data-motion="reduced"] *, [data-motion="reduced"] *::before, [data-motion="reduced"] *::after {
+            animation-duration: 0.001s !important;
+            transition-duration: 0.001s !important;
+            scroll-behavior: auto !important;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--focus-ring);
+            outline-offset: 3px;
+        }
+
+        /* === BARRA DE ACESSIBILIDADE === */
+        #accessibility-bar {
+            background: var(--bg-header);
+            border-bottom: 2px solid var(--border-color);
+            padding: 8px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+        }
+
+        .access-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .access-btn, .access-select {
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+
+        .access-btn:hover, .access-select:hover {
+            border-color: var(--primary);
+        }
+
+        /* === CABEÇALHO / HEADER === */
+        header {
+            background: linear-gradient(135deg, var(--bg-header), var(--bg-card));
+            border-bottom: 3px solid var(--primary);
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-badge {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 900;
+            font-size: 1.2rem;
+            padding: 8px 14px;
+            border-radius: 8px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(255, 42, 133, 0.4);
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 16px;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .cart-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .cart-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* === CONTEÚDO PRINCIPAL & ABAS === */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2.section-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2.section-title span {
+            color: var(--primary);
+        }
+
+        p.section-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 1.05rem;
+        }
+
+        /* === COMPONENTE: AGENDAMENTO DE LAN HOUSE === */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-layout { grid-template-columns: 1fr; }
+            header { flex-direction: column; gap: 15px; }
+            nav ul { flex-wrap: wrap; justify-content: center; }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            background: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: filter 0.2s;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.1);
+        }
+
+        .reservation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .reservation-item {
+            background: var(--bg-main);
+            border-left: 4px solid var(--cyan);
+            padding: 14px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reservation-info h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .reservation-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .btn-danger {
+            background: #ff3b30;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* === COMPONENTE: LOJA & DESCONTOS VIP === */
+        .vip-banner {
+            background: linear-gradient(135deg, #7000ff, #ff2a85);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(112, 0, 255, 0.3);
+        }
+
+        .vip-banner h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        .vip-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .vip-toggle.active {
+            background: white;
+            color: var(--primary);
+        }
+
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .vip-tag {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        .product-img-wrapper {
+            height: 160px;
+            background: var(--bg-main);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .product-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            flex-grow: 1;
+        }
+
+        .product-pricing {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .price-current {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .price-original {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .btn-buy {
+            background: var(--cyan);
+            color: #0c0a13;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: filter 0.2s;
+        }
+
+        .btn-buy:hover {
+            filter: brightness(1.1);
+        }
+
+        /* === CARRINHO LATERAL (DRAWER) === */
+        #cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100%;
+            background: var(--bg-card);
+            border-left: 2px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            transition: right 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #cart-drawer.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-body {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-main);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-main);
+            padding: 10px 14px;
+            border-radius: 6px;
+        }
+
+        /* === ENDEREÇO E MAPA === */
+        .location-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .location-grid { grid-template-columns: 1fr; }
+        }
+
+        .map-box {
+            background: var(--bg-main);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .address-info {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .address-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .address-icon {
+            background: var(--primary);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* === RODAPÉ === */
+        footer {
+            background: var(--bg-header);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Filtros SVG ocultos para correção de daltonismo -->
+    <svg style="display:none">
+        <filter id="protanopia-filter">
+            <feColorMatrix type="matrix" values="0.567, 0.433, 0, 0, 0  0.558, 0.442, 0, 0, 0  0, 0.242, 0.758, 0, 0  0, 0, 0, 1, 0"/>
+        </filter>
+        <filter id="deuteranopia-filter">
+            <feColorMatrix type="matrix" values="0.625, 0.375, 0, 0, 0  0.7, 0.3, 0, 0, 0  0, 0.3, 0.7, 0, 0  0, 0, 0, 1, 0"/>
+        </filter>
+        <filter id="tritanopia-filter">
+            <feColorMatrix type="matrix" values="0.95, 0.05, 0, 0, 0  0, 0.433, 0.567, 0, 0  0, 0.475, 0.525, 0, 0  0, 0, 0, 1, 0"/>
+        </filter>
+    </svg>
+
+    <!-- Barra de Acessibilidade -->
+    <div id="accessibility-bar" role="region" aria-label="Painel de Acessibilidade">
+        <div class="access-group">
+            <span>Acessibilidade:</span>
+            <button class="access-btn" onclick="adjustTextSize('small')" aria-label="Diminuir fonte">A-</button>
+            <button class="access-btn" onclick="adjustTextSize('normal')" aria-label="Fonte normal">A</button>
+            <button class="access-btn" onclick="adjustTextSize('large')" aria-label="Aumentar fonte">A+</button>
+            <button class="access-btn" onclick="toggleContrast()" id="btn-contrast">Alto Contraste</button>
+        </div>
+        <div class="access-group">
+            <label for="font-family-select">Fonte:</label>
+            <select id="font-family-select" class="access-select" onchange="changeFontFamily(this.value)">
+                <option value="system">Sistema (Padrão)</option>
+                <option value="lexend">Lexend (Leitura Fácil)</option>
+            </select>
+            <label for="colorblind-select">Visão:</label>
+            <select id="colorblind-select" class="access-select" onchange="changeColorblindMode(this.value)">
+                <option value="none">Normal</option>
+                <option value="protanopia">Protanopia (Sem Vermelho)</option>
+                <option value="deuteranopia">Deuteranopia (Sem Verde)</option>
+                <option value="tritanopia">Tritanopia (Sem Azul)</option>
+            </select>
+            <button class="access-btn" onclick="toggleTheme()" id="btn-theme-toggle">☀️/🌙 Tema</button>
+        </div>
+    </div>
+
+    <!-- Cabeçalho -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-badge">VICE</div>
+            <div class="logo-text">
+                <h1>LAN & STORE</h1>
+                <p>Leonida Edition • Projeto Escolar</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="switchTab('tab-agendamento', this)" class="active">Agendamento</a></li>
+                <li><a href="#" onclick="switchTab('tab-loja', this)">Loja Gamer</a></li>
+                <li><a href="#" onclick="switchTab('tab-endereco', this)">Endereço</a></li>
+            </ul>
+        </nav>
+        <button class="cart-btn" onclick="toggleCartDrawer()">
+            🛒 Carrinho (<span id="cart-counter">0</span>)
+        </button>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main>
+        <!-- ABA 1: AGENDAMENTO -->
+        <section id="tab-agendamento" class="tab-content active">
+            <h2 class="section-title"><span>🗓️</span> Agendamento de Estações</h2>
+            <p class="section-subtitle">Reserve sua máquina de alta performance ou console para jogar na Lan House.</p>
+
+            <div class="grid-layout">
+                <div class="card">
+                    <h3 style="margin-bottom: 16px;">Nova Reserva</h3>
+                    <form id="reservation-form" onsubmit="handleReservation(event)">
+                        <div class="form-group">
+                            <label for="client-name">Seu Nome / Apelido</label>
+                            <input type="text" id="client-name" class="form-control" placeholder="Ex: Tommy Vercetti" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="station-type">Estação Desejada</label>
+                            <select id="station-type" class="form-control">
+                                <option value="PC RTX 4090 Ultra">PC RTX 4090 Ultra</option>
+                                <option value="Console PS5 Pro">Console PS5 Pro 4K</option>
+                                <option value="Simulador VR Imersivo">Simulador VR Imersivo</option>
+                                <option value="Estação Adaptada (Inclusiva)">Estação Adaptada (Inclusiva)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="res-date">Data</label>
+                            <input type="date" id="res-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="res-time">Horário (Início)</label>
+                            <input type="time" id="res-time" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Confirmar Agendamento</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 16px;">Agendamentos Ativos</h3>
+                    <div id="reservations-container" class="reservation-list">
+                        <p style="color: var(--text-muted); text-align: center; padding: 20px;">Nenhum agendamento realizado ainda.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 2: LOJA & DESCONTOS VIP -->
+        <section id="tab-loja" class="tab-content">
+            <h2 class="section-title"><span>🛍️</span> Loja Gamer & Periféricos</h2>
+            <p class="section-subtitle">Equipamentos de ponta para elevar seu nível de jogo.</p>
+
+            <!-- Banner Exclusivo para Clientes Frequentes / VIP -->
+            <div class="vip-banner">
+                <div>
+                    <h3>⭐ Clube VIP Leonida (Clientes Frequentes)</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.9;">Ative o modo cliente frequente para liberar descontos exclusivos de até 30% em periféricos!</p>
+                </div>
+                <button class="vip-toggle" id="vip-toggle-btn" onclick="toggleVipMode()">Ativar Desconto VIP</button>
+            </div>
+
+            <div class="store-grid" id="product-grid">
+                <!-- Os produtos serão injetados via JavaScript com preços normais e VIP -->
+            </div>
+        </section>
+
+        <!-- ABA 3: ENDEREÇO -->
+        <section id="tab-endereco" class="tab-content">
+            <h2 class="section-title"><span>📍</span> Onde Estamos</h2>
+            <p class="section-subtitle">Venha conhecer nossa sede física inspirada em Vice City.</p>
+
+            <div class="location-grid">
+                <div class="card address-info">
+                    <h3 style="margin-bottom: 10px;">VICE LAN HOUSE & STORE</h3>
+                    <div class="address-item">
+                        <div class="address-icon">📍</div>
+                        <div>
+                            <strong>Endereço Principal</strong>
+                            <p style="color: var(--text-muted);">Av. Ocean Drive, 1986 - Vice Beach, Leonida</p>
+                        </div>
+                    </div>
+                    <div class="address-item">
+                        <div class="address-icon">🕒</div>
+                        <div>
+                            <strong>Horário de Funcionamento</strong>
+                            <p style="color: var(--text-muted);">Segunda a Sábado: 10h00 às 02h00<br>Domingos: 12h00 às 22h00</p>
+                        </div>
+                    </div>
+                    <div class="address-item">
+                        <div class="address-icon">📞</div>
+                        <div>
+                            <strong>Contato / Suporte</strong>
+                            <p style="color: var(--text-muted);">+1 (305) 555-VICE<br>contato@vicelanstore.edu</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="copyAddress()" style="margin-top: 10px;">Copiar Endereço Completo</button>
+                </div>
+
+                <div class="map-box">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">🗺️</div>
+                    <h3 style="margin-bottom: 6px;">Mapa Interativo da Loja</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 300px;">Próximo ao calçadão principal, ao lado da praça central de Vice Beach.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Carrinho Lateral (Drawer) -->
+    <div id="cart-drawer">
+        <div class="cart-header">
+            <h3>Seu Carrinho Gamer</h3>
+            <button class="access-btn" onclick="toggleCartDrawer()">✕ Fechar</button>
+        </div>
+        <div class="cart-body" id="cart-items-container">
+            <p style="color: var(--text-muted); text-align: center;">O carrinho está vazio.</p>
+        </div>
+        <div class="cart-footer">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 14px; font-weight: bold;">
+                <span>Total:</span>
+                <span id="cart-total" style="color: var(--primary);">R$ 0,00</span>
+            </div>
+            <button class="btn-primary" onclick="checkoutCart()">Finalizar Compra Simulado</button>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>VICE LAN & STORE • Projeto Escolar Fictício desenvolvido com HTML5, CSS3 e JavaScript Otimizado.</p>
+    </footer>
+
+    <!-- Script de Lógica -->
+    <script>
+        // === DADOS DE PRODUTOS COM IMAGENS REAIS E PREÇOS VIP ===
+        const products = [
+            { 
+                id: 1, 
+                name: "Teclado Mecânico RGB Vice", 
+                desc: "Switches red, anti-ghosting e iluminação neon customizável.", 
+                regularPrice: 350.00, 
+                vipPrice: 245.00, 
+                imageUrl: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80" 
+            },
+            { 
+                id: 2, 
+                name: "Mouse Gamer Precision 16K", 
+                desc: "Sensor óptico de alta precisão e 6 botões programáveis.", 
+                regularPrice: 220.00, 
+                vipPrice: 154.00, 
+                imageUrl: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=600&q=80" 
+            },
+            { 
+                id: 3, 
+                name: "Headset Surround 7.1 Neon", 
+                desc: "Áudio espacial imersivo e microfone com cancelamento de ruído.", 
+                regularPrice: 400.00, 
+                vipPrice: 280.00, 
+                imageUrl: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=600&q=80" 
+            },
+            { 
+                id: 4, 
+                name: "Mousepad XL Leonida Sunset", 
+                desc: "Superfície speed emborrachada antiderrapante (900x400mm).", 
+                regularPrice: 120.00, 
+                vipPrice: 84.00, 
+                imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" 
+            }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('vice_cart')) || [];
+        let reservations = JSON.parse(localStorage.getItem('vice_reservations')) || [];
+        let isVipActive = JSON.parse(localStorage.getItem('vice_vip')) || false;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            renderReservations();
+            updateCartUI();
+            
+            // Aplicar preferências salvas
+            const savedTheme = localStorage.getItem('vice_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            const savedFont = localStorage.getItem('vice_font') || 'system';
+            document.documentElement.setAttribute('data-font', savedFont);
+            document.getElementById('font-family-select').value = savedFont;
+
+            const savedSize = localStorage.getItem('vice_size') || 'normal';
+            document.documentElement.setAttribute('data-text-size', savedSize);
+
+            const savedContrast = localStorage.getItem('vice_contrast') || 'normal';
+            document.documentElement.setAttribute('data-contrast', savedContrast);
+
+            const savedColorblind = localStorage.getItem('vice_colorblind') || 'none';
+            document.documentElement.setAttribute('data-colorblind', savedColorblind);
+            document.getElementById('colorblind-select').value = savedColorblind;
+
+            if (isVipActive) {
+                document.getElementById('vip-toggle-btn').classList.add('active');
+                document.getElementById('vip-toggle-btn').textContent = 'VIP Ativado (-30%)';
+            }
+        });
+
+        // Navegação de Abas
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            el.classList.add('active');
+        }
+
+        // Renderizar Produtos com Imagens Reais e Desconto VIP
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            products.forEach(p => {
+                const currentPrice = isVipActive ? p.vipPrice : p.regularPrice;
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    ${isVipActive ? '<div class="vip-tag">VIP -30%</div>' : ''}
+                    <div class="product-img-wrapper">
+                        <img src="${p.imageUrl}" alt="${p.name}" loading="lazy">
+                    </div>
+                    <h3 class="product-title">${p.name}</h3>
+                    <p class="product-desc">${p.desc}</p>
+                    <div class="product-pricing">
+                        <span class="price-current">R$ ${currentPrice.toFixed(2)}</span>
+                        ${isVipActive ? `<span class="price-original">R$ ${p.regularPrice.toFixed(2)}</span>` : ''}
+                    </div>
+                    <button class="btn-buy" onclick="addToCart(${p.id})">Adicionar ao Carrinho</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Alternar Modo VIP
+        function toggleVipMode() {
+            isVipActive = !isVipActive;
+            localStorage.setItem('vice_vip', JSON.stringify(isVipActive));
+            const btn = document.getElementById('vip-toggle-btn');
+            if (isVipActive) {
+                btn.classList.add('active');
+                btn.textContent = 'VIP Ativado (-30%)';
+            } else {
+                btn.classList.remove('active');
+                btn.textContent = 'Ativar Desconto VIP';
+            }
+            renderProducts();
+        }
+
+        // Carrinho
+        function toggleCartDrawer() {
+            document.getElementById('cart-drawer').classList.toggle('open');
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const price = isVipActive ? product.vipPrice : product.regularPrice;
+            cart.push({ ...product, finalPrice: price });
+            saveAndRefreshCart();
+            toggleCartDrawer();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveAndRefreshCart();
+        }
+
+        function saveAndRefreshCart() {
+            localStorage.setItem('vice_cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-counter').textContent = cart.length;
+            const container = document.getElementById('cart-items-container');
+            const totalEl = document.getElementById('cart-total');
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">O carrinho está vazio.</p>';
+                totalEl.textContent = 'R$ 0,00';
+                return;
+            }
+
+            container.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.finalPrice;
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <div>
+                        <strong>${item.name}</strong>
+                        <p style="font-size: 0.8rem; color: var(--text-muted);">R$ ${item.finalPrice.toFixed(2)}</p>
+                    </div>
+                    <button class="btn-danger" onclick="removeFromCart(${index})">Remover</button>
+                `;
+                container.appendChild(div);
+            });
+            totalEl.textContent = `R$ ${total.toFixed(2)}`;
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) return alert('Seu carrinho está vazio!');
+            alert('Compra simulada com sucesso! Obrigado por comprar na Vice Store.');
+            cart = [];
+            saveAndRefreshCart();
+            toggleCartDrawer();
+        }
+
+        // Agendamentos
+        function handleReservation(e) {
+            e.preventDefault();
+            const name = document.getElementById('client-name').value;
+            const station = document.getElementById('station-type').value;
+            const date = document.getElementById('res-date').value;
+            const time = document.getElementById('res-time').value;
+
+            reservations.push({ id: Date.now(), name, station, date, time });
+            localStorage.setItem('vice_reservations', JSON.stringify(reservations));
+            renderReservations();
+            document.getElementById('reservation-form').reset();
+            alert('Agendamento realizado com sucesso!');
+        }
+
+        function cancelReservation(id) {
+            reservations = reservations.filter(r => r.id !== id);
+            localStorage.setItem('vice_reservations', JSON.stringify(reservations));
+            renderReservations();
+        }
+
+        function renderReservations() {
+            const container = document.getElementById('reservations-container');
+            if (reservations.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Nenhum agendamento realizado ainda.</p>';
+                return;
+            }
+            container.innerHTML = '';
+            reservations.forEach(r => {
+                const div = document.createElement('div');
+                div.className = 'reservation-item';
+                div.innerHTML = `
+                    <div class="reservation-info">
+                        <h4>${r.station}</h4>
+                        <p>Cliente: <strong>${r.name}</strong> | Data: ${r.date} às ${r.time}</p>
+                    </div>
+                    <button class="btn-danger" onclick="cancelReservation(${r.id})">Cancelar</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Funções de Acessibilidade
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('vice_theme', next);
+        }
+
+        function adjustTextSize(size) {
+            document.documentElement.setAttribute('data-text-size', size);
+            localStorage.setItem('vice_size', size);
+        }
+
+        function toggleContrast() {
+            const current = document.documentElement.getAttribute('data-contrast');
+            const next = current === 'high' ? 'normal' : 'high';
+            document.documentElement.setAttribute('data-contrast', next);
+            localStorage.setItem('vice_contrast', next);
+        }
+
+        function changeFontFamily(font) {
+            document.documentElement.setAttribute('data-font', font);
+            localStorage.setItem('vice_font', font);
+        }
+
+        function changeColorblindMode(mode) {
+            document.documentElement.setAttribute('data-colorblind', mode);
+            localStorage.setItem('vice_colorblind', mode);
+        }
+
+        function copyAddress() {
+            navigator.clipboard.writeText("Av. Ocean Drive, 1986 - Vice Beach, Leonida");
+            alert("Endereço copiado para a área de transferência!");
+        }
+    </script>
+</body>
+</html>
